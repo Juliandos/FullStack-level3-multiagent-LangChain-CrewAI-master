@@ -1,11 +1,13 @@
 "use client";
 
-import {useState} from "react";
+import { EventLog } from "@/components/EventLog";
+import { FinalOutput } from "@/components/FinalOutput";
 import InputSection from "@/components/InputSection";
+import { useCrewOutput } from "@/hooks/useCrewOutput";
 
 export default function Home() {
-  const [technologies, setTechnologies] = useState([]);
-  const [businessareas, setBusinessareas] = useState([]); 
+  // Hooks
+  const crewOutput = useCrewOutput();
 
   return (
     <div className="bg-white min-h-screen text-black">
@@ -16,16 +18,16 @@ export default function Home() {
             <InputSection
               title="Technologies"
               placeholder="Example: Generative AI"
-              data={technologies}
-              setData={setTechnologies}
+              data={crewOutput.technologies}
+              setData={crewOutput.setTechnologies}
             />
           </div>
           <div className="w-1/2 p-4">
             <InputSection
               title="Business Areas"
               placeholder="Example: Customer Service"
-              data={businessareas}
-              setData={setBusinessareas}
+              data={crewOutput.businessareas}
+              setData={crewOutput.setBusinessareas}
             />
           </div>
         </div>
@@ -33,13 +35,17 @@ export default function Home() {
         {/* Output section and event log in a single column below */}
         <div className="flex flex-col w-full p-4">
           <div className="flex justify-between items-center mb-4">
-          <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm"
+            <button
+              onClick={() => crewOutput.startOutput()}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm"
+              disabled={crewOutput.running}
             >
-              Start
+              {crewOutput.running ? "Running..." : "Start"}
             </button>
-          {/* TODO: FINAL OUTPUT */}
-          {/* TODO: EVENT LOG */}
+          </div>
+          <FinalOutput businessareaInfoList={crewOutput.businessareaInfoList} />
+          <div className="my-8"> {/* Added margin for spacing */}
+            <EventLog events={crewOutput.events} />
           </div>
         </div>
       </div>
