@@ -1,5 +1,6 @@
 from langchain_openai import ChatOpenAI
 from log_manager import append_event
+from agents import ResearchAgents
 
 class TechnologyResearchCrew:
     def __init__(self, input_id: str):
@@ -13,6 +14,11 @@ class TechnologyResearchCrew:
         and businessareas {businessareas}""")
 
         # TODO: SETUP AGENTS
+        agents = ResearchAgents()
+
+        research_manager = agents.research_manager(technologies, businessareas)
+        research_agent = agents.research_agent()
+  
         # TODO: SETUP TASKS
         # TODO: CREATE CREW
 
