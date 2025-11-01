@@ -5,18 +5,20 @@ from crews import TechnologyResearchCrew
 from log_manager import append_event, outputs, outputs_lock, Event
 from datetime import datetime
 import json
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 def kickoff_crew(input_id, technologies: list[str], businessareas: list[str]):
     print(f"Running crew for {input_id} with technologies {technologies} and businessareas {businessareas}")
 
     results = None
     try:
-        technology_research_crew = TechnologyResearchCrew(input_id)
-        technology_research_crew.setup_crew(
+        company_research_crew = TechnologyResearchCrew(input_id)
+        company_research_crew.setup_crew(
             technologies, businessareas)
-        results = technology_research_crew.kickoff()
+        results = company_research_crew.kickoff()
 
     except Exception as e:
         print(f"CREW FAILED: {str(e)}")
